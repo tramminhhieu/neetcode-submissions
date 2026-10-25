@@ -1,0 +1,32 @@
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> result = new ArrayList<>();
+        int i = 0;
+        int n = intervals.length;
+
+        // Giai đoạn 1: add các interval kết thúc trước khi newInterval bắt đầu
+        while (i < n && intervals[i][1] < newInterval[0]) {
+            result.add(intervals[i]);
+            i++;
+        }
+
+        // Giai đoạn 2: merge các interval chồng lấn với newInterval
+        // Điều kiện overlap theo đề: start[i] <= newInterval.end
+        int mergedStart = newInterval[0];
+        int mergedEnd = newInterval[1];
+        while (i < n && intervals[i][0] <= mergedEnd) {
+            mergedStart = Math.min(mergedStart, intervals[i][0]);
+            mergedEnd = Math.max(mergedEnd, intervals[i][1]);
+            i++;
+        }
+        result.add(new int[]{mergedStart, mergedEnd});
+
+        // Giai đoạn 3: add các interval còn lại (bắt đầu sau khi merged interval kết thúc)
+        while (i < n) {
+            result.add(intervals[i]);
+            i++;
+        }
+
+        return result.toArray(new int[result.size()][]);
+    }
+}
