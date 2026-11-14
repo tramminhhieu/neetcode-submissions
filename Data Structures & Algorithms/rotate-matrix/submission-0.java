@@ -1,0 +1,27 @@
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+
+        // Bước 1: Transpose - chỉ duyệt nửa trên đường chéo (j bắt đầu từ i + 1)
+        // Nếu j bắt đầu từ 0, mỗi cặp bị swap 2 lần → quay về như cũ!
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+
+        // Bước 2: Reverse từng hàng bằng Two Pointers
+        for (int i = 0; i < n; i++) {
+            int left = 0, right = n - 1;
+            while (left < right) {
+                int temp = matrix[i][left];
+                matrix[i][left] = matrix[i][right];
+                matrix[i][right] = temp;
+                left++;
+                right--;
+            }
+        }
+    }
+}
